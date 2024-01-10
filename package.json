@@ -1,0 +1,25 @@
+{
+  "name": "htmx-todo",
+  "version": "1.0.0",
+  "description": "todo app with golang + htmx",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo 'Error: no test specified' && exit 1",
+    "dev": "concurrently \"vite build --watch\" \"tailwindcss -i ./src/index.css -o ./static/index.css --watch\""
+  },
+  "author": "test",
+  "license": "ISC",
+  "devDependencies": {
+    "autoprefixer": "^10.4.16",
+    "concurrently": "^8.2.2",
+    "postcss": "^8.4.33",
+    "prettier": "^3.1.1",
+    "prettier-plugin-go-template": "^0.0.15",
+    "tailwindcss": "^3.4.1",
+    "vite": "^5.0.11"
+  },
+  "dependencies": {
+    "htmx.org": "^1.9.10"
+  }
+}
