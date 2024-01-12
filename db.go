@@ -21,7 +21,7 @@ func closeDB() error {
 }
 
 func setupDB() error {
-  _, err := DB.Exec(`create table if not exists task (id integer not null primary key, title text, completed boolean default false, position integer);`)
+  _, err := DB.Exec(`create table if not exists tasks (id integer not null primary key, title text, completed boolean default false, position integer);`)
   if err != nil {
     return err
   }

@@ -1,7 +1,6 @@
 package main
 
 import (
-	"html/template"
 	"log"
 	"net/http"
 
@@ -20,12 +19,19 @@ func main() {
   if err != nil {
     log.Panic(err)
   }
+  err = parseTemplates()
+  if err != nil {
+    log.Panic(err)
+  }
 	r := chi.NewRouter()
 	r.Use(middleware.Logger)
-  r.Handle("/static/*", http.StripPrefix("/static/", http.FileServer(http.Dir("./static"))))
-	r.Get("/", func(w http.ResponseWriter, _ *http.Request) {
-    templ, _ := template.New("").ParseFiles("templates/index.html")
-    templ.ExecuteTemplate(w, "Base", nil)
-	})
+    r.Handle("/static/*", http.StripPrefix("/static/", http.FileServer(http.Dir("./static/"))))
+
+	r.Get("/", handleGetTasks)
+	r.Post("/tasks", handleCreateTask)
+  r.Put("/tasks/{id}/toggle", handleToggleTask)
+  r.Delete("/tasks/{id}", handleDeleteTask)
+  r.Get("/tasks/{id}/edit", handleEditTask)
+
 	http.ListenAndServe("localhost:3000", r)
 }

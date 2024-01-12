@@ -2,8 +2,7 @@ package main
 
 import (
 	"context"
-
-	"golang.org/x/net/context"
+	"fmt"
 )
 
 type Item struct {
@@ -57,6 +56,15 @@ func updateTask(ID, int, title string) (Item, error) {
 func fetchCount() (int, error) {
   var count int
   err := DB.QueryRow("select count(*) from tasks;").Scan(&count)
+  if err != nil {
+    return 0, err
+  }
+  return count, nil
+}
+
+func fetchCompletedCount() (int, error) {
+  var count int
+  err := DB.QueryRow("select count(*) from tasks where completed = 1;").Scan(&count)
   if err != nil {
     return 0, err
   }
@@ -130,4 +138,14 @@ func orderTasks(ctx context.Context, values []int) error {
     return err
   }
   return nil
+}
+
+func toggleTask(ID int) (Item, error) {
+  var item Item
+  err := DB.QueryRow("update tasks set completed = case when completed = 1 then 0 else 1 end where id = (?) returning id, title, completed", ID).Scan(&item.ID, &item.Title, &item.Completed)
+  fmt.Println("Pasosu por aqui!")
+  if err != nil {
+    return Item{}, err
+  }
+  return item, nil
 }
