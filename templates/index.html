@@ -8,6 +8,7 @@
   <title>HTMX Go Todo</title>
   <link href="/static/index.css" rel="stylesheet" />
   <script src="/static/htmx.js" type="text/javascript"></script>
+  <script src="/static/sortable.js" type="text/javascript"></script>
 </head>
 
 <body>
@@ -20,11 +21,11 @@
     {{ template "Form" }}
 
 
-    <div id="items" class="space-y-2.5 mt-4">
+    <form hx-put="/tasks" hx-trigger="end" hx-swap="none" id="items" class="space-y-2.5 mt-4">
       {{ range .Items }}
       {{ template "Item" dict "Item" . "SwapOOB" false "Editing" false }}
       {{ end }}
-    </div>
+    </form>
   </div>
 </body>
 

@@ -109,3 +109,46 @@ func handleEditTask(w http.ResponseWriter, r *http.Request) {
   }
 	tmpl.ExecuteTemplate(w, "Item", map[string]any{"Item": task, "Editing": true})
 }
+
+func handleUpdateTask(w http.ResponseWriter, r *http.Request) {
+  id, err := strconv.Atoi(chi.URLParam(r, "id"))
+  if err != nil {
+    log.Printf("error parsing id into int %v", err)
+    return
+  }
+  title := r.FormValue("title")
+  if title == "" {
+    return
+  }
+  task, err := updateTask(id, title)
+  if err != nil {
+    log.Printf("error fetching task with id %d %v",id, err)
+    return
+  }
+  tmpl.ExecuteTemplate(w, "Item", map[string]any{"Item": task})
+}
+
+func handleOrderTasks(_ http.ResponseWriter, r *http.Request) {
+  err := r.ParseForm()
+  if err != nil {
+    log.Printf("error parsing form %v", err)
+    return
+  }
+  var values []int
+  for k, v := range r.Form {
+    if k == "item" {
+      for _, iv := range v {
+        value, err := strconv.Atoi(iv)
+        if err != nil {
+          log.Printf("error parsing form %v", err)
+          return
+        }
+        values = append(values, value)
+      }
+    }
+  }
+  err = orderTasks(r.Context(), values)
+  if err != nil {
+    log.Printf("error parsing form %v", err)
+  }
+}

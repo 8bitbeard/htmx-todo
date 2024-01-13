@@ -44,7 +44,7 @@ func fetchTask(ID int) (Item, error) {
 	return item, nil
 }
 
-func updateTask(ID, int, title string) (Item, error) {
+func updateTask(ID int, title string) (Item, error) {
 	var item Item
 	err := DB.QueryRow("update tasks set title = (?) where id = (?) returning id, title, completed", title, ID).Scan(&item.ID, &item.Title, &item.Completed)
 	if err != nil {

@@ -29,8 +29,10 @@ func main() {
 
 	r.Get("/", handleGetTasks)
 	r.Post("/tasks", handleCreateTask)
-  r.Put("/tasks/{id}/toggle", handleToggleTask)
+  r.Put("/tasks", handleOrderTasks)
   r.Delete("/tasks/{id}", handleDeleteTask)
+  r.Put("/tasks/{id}", handleUpdateTask)
+  r.Put("/tasks/{id}/toggle", handleToggleTask)
   r.Get("/tasks/{id}/edit", handleEditTask)
 
 	http.ListenAndServe("localhost:3000", r)
